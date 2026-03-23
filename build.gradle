@@ -95,6 +95,7 @@ jar {
 shadowJar {
     archiveBaseName.set("plugin-${pluginId}")
     archiveClassifier.set('')
+    archiveVersion.set('')
 
     from("src/main/resources") { into("/resources") }
 
