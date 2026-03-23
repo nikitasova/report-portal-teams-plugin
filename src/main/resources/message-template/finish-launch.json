@@ -1,0 +1,81 @@
+{
+  "type": "message",
+  "attachments": [
+    {
+      "contentType": "application/vnd.microsoft.card.adaptive",
+      "content": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.4",
+        "body": [
+          {
+            "type": "Container",
+            "style": "${RESULT_STYLE}",
+            "bleed": true,
+            "items": [
+              {
+                "type": "TextBlock",
+                "text": "📋 ${PROJECT_NAME}",
+                "weight": "Bolder",
+                "size": "Medium",
+                "wrap": true,
+                "color": "Default"
+              },
+              {
+                "type": "TextBlock",
+                "text": "${LAUNCH_NAME} #${LAUNCH_NUMBER}",
+                "weight": "Bolder",
+                "size": "Large",
+                "wrap": true,
+                "color": "Default",
+                "spacing": "None"
+              }
+            ]
+          },
+          {
+            "type": "TextBlock",
+            "text": "${LAUNCH_START_TIME} — ${LAUNCH_FINISH_TIME}",
+            "isSubtle": true,
+            "size": "Small",
+            "spacing": "Medium"
+          },
+          {
+            "type": "TextBlock",
+            "text": "Total: **${statistics$executions$total}** | ✅ ${statistics$executions$passed} | ❌ ${statistics$executions$failed} | ⏭️ ${statistics$executions$skipped}",
+            "wrap": true,
+            "spacing": "Medium",
+            "separator": true
+          },
+          {
+            "type": "TextBlock",
+            "text": "🐛 PB: ${statistics$defects$product_bug$total} | ⚙️ AB: ${statistics$defects$automation_bug$total} | 💥 SI: ${statistics$defects$system_issue$total} | 🔍 TI: ${statistics$defects$to_investigate$total}",
+            "wrap": true,
+            "spacing": "Small"
+          },
+          {
+            "type": "FactSet",
+            "spacing": "Medium",
+            "separator": true,
+            "facts": [
+              {
+                "title": "Description",
+                "value": "${LAUNCH_DESCRIPTION}"
+              },
+              {
+                "title": "Attributes",
+                "value": "${LAUNCH_ATTRIBUTES}"
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.OpenUrl",
+            "title": "Open in Report Portal",
+            "url": "${LAUNCH_LINK}"
+          }
+        ]
+      }
+    }
+  ]
+}

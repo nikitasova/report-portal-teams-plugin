@@ -1,0 +1,26 @@
+{
+  "@type": "MessageCard",
+  "@context": "https://schema.org/extensions",
+  "summary": "[${PROJECT_NAME}] ${LAUNCH_NAME} #${LAUNCH_NUMBER}",
+  "themeColor": "${RESULT_COLOR_NOHASH}",
+  "title": "📋 ${PROJECT_NAME}",
+  "sections": [
+    {
+      "activityTitle": "**${LAUNCH_NAME} #${LAUNCH_NUMBER}**",
+      "activitySubtitle": "${LAUNCH_START_TIME} — ${LAUNCH_FINISH_TIME}",
+      "facts": [
+        {"name": "Execution", "value": "Total: **${statistics$executions$total}** | ✅ ${statistics$executions$passed} | ❌ ${statistics$executions$failed} | ⏭️ ${statistics$executions$skipped}"},
+        {"name": "Defects", "value": "🐛 PB: ${statistics$defects$product_bug$total} | ⚙️ AB: ${statistics$defects$automation_bug$total} | 💥 SI: ${statistics$defects$system_issue$total} | 🔍 TI: ${statistics$defects$to_investigate$total}"},
+        {"name": "Description", "value": "${LAUNCH_DESCRIPTION}"},
+        {"name": "Attributes", "value": "${LAUNCH_ATTRIBUTES}"}
+      ]
+    }
+  ],
+  "potentialAction": [
+    {
+      "@type": "OpenUri",
+      "name": "Open in Report Portal",
+      "targets": [{"os": "default", "uri": "${LAUNCH_LINK}"}]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.0.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.4.3' apply false
+}
+
+group = 'io.github.nikitasova'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+ext {
+    pluginId = 'teams'
+    lombokVersion = '1.18.34'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    // ReportPortal host provides these at runtime
+    compileOnly 'com.github.reportportal:plugin-api:5.15.0'
+    compileOnly 'com.github.reportportal:commons-dao:5.15.1'
+    compileOnly 'com.github.reportportal:commons:5.15.1'
+
+    // Spring & PF4J — provided by RP host at runtime
+    compileOnly 'org.springframework:spring-context'
+    compileOnly 'org.springframework:spring-web'
+    compileOnly 'org.springframework:spring-beans'
+    compileOnly 'org.springframework:spring-jdbc'
+    compileOnly 'org.pf4j:pf4j:3.12.0'
+    annotationProcessor 'org.pf4j:pf4j:3.12.0'
+    compileOnly 'jakarta.annotation:jakarta.annotation-api'
+
+    // Jackson — provided by RP host
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'com.github.reportportal:plugin-api:5.15.0'
+    testImplementation 'com.github.reportportal:commons-dao:5.15.1'
+    testImplementation 'com.github.reportportal:commons:5.15.1'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:5.14.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Exclude main resources from default processing — they go into /resources in the JAR
+sourceSets {
+    main {
+        resources {
+            exclude '**'
+        }
+    }
+}
+
+jar {
+    from("src/main/resources") { into("/resources") }
+
+    manifest {
+        attributes(
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' '),
+                "Plugin-Id": "${pluginId}",
+                "Plugin-Version": "${project.version}",
+                "Plugin-Provider": "nikitasova",
+                "Plugin-Class": "io.github.nikitasova.reportportal.extension.teams.TeamsPlugin",
+                "Plugin-Service": "api"
+        )
+    }
+}
+
+// The shadow JAR is the deployable plugin artifact.
+// Contains ONLY plugin classes + resources; all RP/Spring deps are provided at runtime.
+shadowJar {
+    archiveBaseName.set("plugin-${pluginId}")
+    archiveClassifier.set('')
+
+    from("src/main/resources") { into("/resources") }
+
+    configurations = [project.configurations.runtimeClasspath]
+    zip64 = true
+
+    dependencies {
+        exclude(dependency('.*:.*'))
+    }
+}
+
+task plugin(type: Jar) {
+    archiveBaseName.set("plugin-${pluginId}")
+    into('classes') { with jar }
+    into('lib') { from configurations.compileClasspath }
+    archiveExtension.set('zip')
+}
+
+test {
+    useJUnitPlatform()
+}
