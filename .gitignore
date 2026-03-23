@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 .kotlin
 example
+notes
 
 ### IntelliJ IDEA ###
 .idea/
@@ -44,3 +45,4 @@ bin/
 node_modules/
 ui/build/
 ui/node_modules/
+
