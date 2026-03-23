@@ -70,6 +70,36 @@ class AttachmentResolverTest {
     assertTrue(result.isEmpty());
   }
 
+  @Test
+  void shouldStripDefaultHttpPort() {
+    assertEquals("http://rp.example.com/ui/#proj/launches/all/1",
+        AttachmentResolver.stripDefaultPort("http://rp.example.com:80/ui/#proj/launches/all/1"));
+  }
+
+  @Test
+  void shouldStripDefaultHttpsPort() {
+    assertEquals("https://rp.example.com/ui/#proj/launches/all/1",
+        AttachmentResolver.stripDefaultPort("https://rp.example.com:443/ui/#proj/launches/all/1"));
+  }
+
+  @Test
+  void shouldStripPort80FromHttps() {
+    assertEquals("https://reportportal.dynamic-dev.int.fxservice.com/ui/#am_dashboard/launches/all/308625",
+        AttachmentResolver.stripDefaultPort("https://reportportal.dynamic-dev.int.fxservice.com:80/ui/#am_dashboard/launches/all/308625"));
+  }
+
+  @Test
+  void shouldKeepNonDefaultPort() {
+    assertEquals("https://rp.example.com:8080/ui/#proj/launches/all/1",
+        AttachmentResolver.stripDefaultPort("https://rp.example.com:8080/ui/#proj/launches/all/1"));
+  }
+
+  @Test
+  void shouldKeepUrlWithoutPort() {
+    assertEquals("https://rp.example.com/ui/#proj/launches/all/1",
+        AttachmentResolver.stripDefaultPort("https://rp.example.com/ui/#proj/launches/all/1"));
+  }
+
   private Launch createLaunch() {
     Launch launch = new Launch();
     launch.setId(1L);

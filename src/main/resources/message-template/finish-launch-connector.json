@@ -9,7 +9,7 @@
       "activityTitle": "**${LAUNCH_NAME} #${LAUNCH_NUMBER}**",
       "activitySubtitle": "🕐 ${LAUNCH_START_TIME} → ${LAUNCH_FINISH_TIME}",
       "facts": [
-        { "name": "📊 Executions", "value": "Total: **${statistics$executions$total}** — ✅ Passed: ${statistics$executions$passed} | ❌ Failed: ${statistics$executions$failed} | ⏭️ Skipped: ${statistics$executions$skipped}" },
+        { "name": "📊 Executions", "value": "Total: **${statistics$executions$total}** —| ✅ Passed: ${statistics$executions$passed} | ❌ Failed: ${statistics$executions$failed} | ⏭️ Skipped: ${statistics$executions$skipped}" },
         { "name": "🔎 Defects", "value": "🐛 Product Bug: ${statistics$defects$product_bug$total} | ⚙️ Automation Bug: ${statistics$defects$automation_bug$total} | 💥 System Issue: ${statistics$defects$system_issue$total} | 🔍 To Investigate: ${statistics$defects$to_investigate$total}" },
         { "name": "📝 Description", "value": "${LAUNCH_DESCRIPTION}" },
         { "name": "🏷️ Attributes", "value": "${LAUNCH_ATTRIBUTES}" }

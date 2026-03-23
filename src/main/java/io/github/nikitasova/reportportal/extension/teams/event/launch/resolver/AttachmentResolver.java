@@ -11,6 +11,7 @@ import io.github.nikitasova.reportportal.extension.teams.model.template.Template
 import io.github.nikitasova.reportportal.extension.teams.model.template.TextProperty;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class AttachmentResolver {
     }
 
     if (launchLink != null && !launchLink.isBlank()) {
-      allProperties.put(new TextProperty(DefaultTemplateProperty.LAUNCH_LINK.getName()), launchLink);
+      allProperties.put(new TextProperty(DefaultTemplateProperty.LAUNCH_LINK.getName()),
+          stripDefaultPort(launchLink));
     }
     if (projectName != null && !projectName.isBlank()) {
       allProperties.put(new TextProperty(DefaultTemplateProperty.PROJECT_NAME.getName()), projectName);
@@ -77,6 +79,21 @@ public class AttachmentResolver {
     warnUnreplacedPlaceholders(result);
 
     return result;
+  }
+
+  static String stripDefaultPort(String url) {
+    try {
+      URI uri = URI.create(url);
+      int port = uri.getPort();
+      if (port == 80 || port == 443) {
+        URI clean = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+            -1, uri.getPath(), uri.getQuery(), uri.getFragment());
+        return clean.toString();
+      }
+    } catch (Exception e) {
+      log.warn("Failed to parse launch link URL: {}", url);
+    }
+    return url;
   }
 
   private static String escapeJson(String value) {
