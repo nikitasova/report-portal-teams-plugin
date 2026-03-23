@@ -5,6 +5,12 @@
 <h1 align="center">ReportPortal Teams Plugin</h1>
 
 <p align="center">
+  <a href="https://github.com/nikitasova/report-portal-teams-plugin/actions/workflows/release.yml">
+    <img src="https://github.com/nikitasova/report-portal-teams-plugin/actions/workflows/release.yml/badge.svg" alt="Release">
+  </a>
+</p>
+
+<p align="center">
   <strong>Microsoft Teams notifications for your ReportPortal launches</strong>
 </p>
 
