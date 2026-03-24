@@ -25,7 +25,7 @@ public class PluginInfoProviderImpl implements PluginInfoProvider {
 
   private static final String PLUGIN_DESCRIPTION =
       "Integrate ReportPortal with Microsoft Teams. "
-          + "Receive launch finish notifications in your Teams channel via Power Automate webhooks.";
+          + "Receive launch finish notifications in your Teams channel via Webhook & Power Automate webhooks. Made by - nikitasova.";
 
   private static final String RULE_DESCRIPTION =
       "Provide a Microsoft Teams webhook URL for every rule to send launch notifications";
